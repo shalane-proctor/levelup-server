@@ -2,10 +2,10 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from levelupapi.models import Event
+from levelupapi.models import EventGamer
 
 
-class EventView(ViewSet):
+class EventGamerView(ViewSet):
     """Level up Event view"""
 
     def retrieve(self, request, pk):
@@ -13,8 +13,8 @@ class EventView(ViewSet):
         Returns:
             Response -- JSON serialized event
         """
-        event = Event.objects.get(pk=pk)
-        serializer = EventSerializer(event)
+        event_gamer = EventGamer.objects.get(pk=pk)
+        serializer = EventSerializer(event_gamer)
         return Response(serializer.data)
 
     def list(self, request):
@@ -22,14 +22,14 @@ class EventView(ViewSet):
         Returns:
             Response -- JSON serialized list of events
         """
-        events = Event.objects.all()
-        game = request.query_params.get('game', None)
-        if game is not None:
-            events = events.filter(game_id=game)
-        organizer = request.query_params.get('organizer', None)
-        if organizer is not None:
-            events = events.filter(gamer_id=organizer)
-        serializer = EventSerializer(events, many=True)
+        event_gamers = EventGamer.objects.all()
+        gamer_id = request.query_params.get('gamer_id', None)
+        if gamer_id is not None:
+            event_gamers = event_gamers.filter(gamer_id=gamer_id)
+        event_id = request.query_params.get('event_id', None)
+        if event_id is not None:
+            event_gamers = event_gamers.filter(event_id=event_id)
+        serializer = EventSerializer(event_gamers, many=True)
         return Response(serializer.data)
 
 
@@ -37,6 +37,6 @@ class EventSerializer(serializers.ModelSerializer):
     """JSON serializer for events
     """
     class Meta:
-        model = Event
-        fields = ('id', 'game', 'description', 'date', 'time', 'organizer')
+        model = EventGamer
+        fields = ('gamer', 'event')
         depth = 2
