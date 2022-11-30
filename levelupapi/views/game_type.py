@@ -5,7 +5,12 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from levelupapi.models import GameType
 
-
+class GameTypeSerializer(serializers.ModelSerializer):
+    """JSON serializer for game types
+    """
+    class Meta:
+        model = GameType
+        fields = ('id', 'label')
 class GameTypeView(ViewSet):
     """Level up game types view"""
 
@@ -30,9 +35,10 @@ class GameTypeView(ViewSet):
         serializer = GameTypeSerializer(game_types, many=True)
         return Response(serializer.data)
 
-class GameTypeSerializer(serializers.ModelSerializer):
-    """JSON serializer for game types
-    """
-    class Meta:
-        model = GameType
-        fields = ('id', 'label')
+    def create(self, request):
+
+        game_type = GameType.objects.create(
+            label=request.data["label"]
+        )
+        serializer = GameTypeSerializer(game_type)
+        return Response(serializer.data)
