@@ -40,7 +40,7 @@ class EventView(ViewSet):
 
     def create(self, request):
         
-        organizer = Gamer.objects.get(pk=request.data["organizer"])
+        organizer = Gamer.objects.get(uid=request.data["organizer"])
         game = Game.objects.get(pk=request.data["game"])
 
         event = Event.objects.create(

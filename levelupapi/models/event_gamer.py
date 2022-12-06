@@ -6,3 +6,7 @@ class EventGamer(models.Model):
 
     gamer = models.ForeignKey(Gamer, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name

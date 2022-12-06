@@ -42,14 +42,14 @@ class GameView(ViewSet):
         Returns
             Response -- JSON serialized game instance
         """
-        gamer = Gamer.objects.get(uid=request.data["user_id"])
-        game_type = GameType.objects.get(pk=request.data["game_type"])
+        gamer = Gamer.objects.get(uid=request.data['user_id'])
+        game_type = GameType.objects.get(pk=request.data['game_type'])
 
         game = Game.objects.create(
-            title=request.data["title"],
-            maker=request.data["maker"],
-            number_of_players=request.data["number_of_players"],
-            skill_level=request.data["skill_level"],
+            title=request.data['title'],
+            maker=request.data['maker'],
+            number_of_players=request.data['number_of_players'],
+            skill_level=request.data['skill_level'],
             gamer=gamer,
             game_type=game_type
         )
